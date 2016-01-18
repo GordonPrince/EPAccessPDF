@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <Product Id="*" Name="EPAccessPDF" Language="1033" Version="1.0.10" Manufacturer="Tekhelps, Inc." UpgradeCode="{7A29B7A9-F865-4F4D-AC56-1DCA1481957A}" Codepage="1252">
+    <Package AdminImage="no" Comments="EPAccessPDF" Compressed="yes" Description="InstantFile PDF document processing" InstallerVersion="200" InstallScope="perUser" Languages="1033" Manufacturer="Tekhelps, Inc." Platform="x86" ReadOnly="no" ShortNames="no" SummaryCodepage="1252" />
+    <Media Id="1" Cabinet="EPAccessPDF.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
+    <Property Id="DiskPrompt" Value="EPAccessPDF Installation [1]" />
+    <Property Id="ARPCOMMENTS" Value="EPAccessPDF" />
+    <Property Id="ARPCONTACT" Value="Tekhelps, Inc." />
+    <!-- The ".NET Framework" launch condition. -->
+    <PropertyRef Id="NETFRAMEWORK45"/>
+    <Condition Message="This setup requires the .NET Framework 4.5.  Please install the .NET Framework and run this setup again."><![CDATA[Installed OR NETFRAMEWORK45]]></Condition>
+    <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
+    <Binary Id="adxregistrator_exe" SourceFile="$(var.ADX_PATH)\Redistributables\adxregistrator.exe" />
+    <!-- The "adxregistrator.exe" custom action. -->
+    <CustomAction Id="_01BDD1DB_2895_4115_924E_594A8912AEAE" BinaryKey="adxregistrator_exe" Execute="deferred" ExeCommand="/install=&quot;[TARGETDIR]$(var.EPAccessPDF.TargetFileName)&quot; /privileges=user" Impersonate="yes" />
+    <!-- The "adxregistrator.exe" custom action. -->
+    <CustomAction Id="_4C77F147_2ED4_4889_9F4A_47A92E3F4464" BinaryKey="adxregistrator_exe" Execute="rollback" ExeCommand="/uninstall=&quot;[TARGETDIR]$(var.EPAccessPDF.TargetFileName)&quot; /privileges=user" Impersonate="yes" />
+    <!-- The "adxregistrator.exe" custom action. -->
+    <CustomAction Id="_397A231C_0641_486A_B8EC_8E812A5D8F20" BinaryKey="adxregistrator_exe" Execute="deferred" ExeCommand="/uninstall=&quot;[TARGETDIR]$(var.EPAccessPDF.TargetFileName)&quot; /privileges=user" Impersonate="yes" />
+    <!-- Initialize the "TARGETDIR" directory property. -->
+    <CustomAction Id="DIRCA_TARGETDIR" Property="TARGETDIR" Value="[LocalAppDataFolder][Manufacturer]\[ProductName]" Execute="firstSequence" />
+    <Property Id="PREVIOUSINSTALLFOLDER">
+      <RegistrySearch Id="_84D12526_9853_4321_AFE4_FAC7667C1F6E" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="Installed" Type="raw" />
+    </Property>
+    <CustomAction Id="DIRCA_TARGETDIR_UNINSTALL" Property="TARGETDIR" Value="[PREVIOUSINSTALLFOLDER]" Execute="firstSequence" />
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
+    <!-- The directory tree of the installation package. -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- The "EPAccessPDF" project output. -->
+      <Directory Id="EPAccessPDF.Binaries" />
+      <!-- The "EPAccessPDF" project output. -->
+      <Directory Id="EPAccessPDF.Satellites" />
+      <Component Id="comp_0A280305_0816_42F4_B619_C31DCEC5791C" Guid="14E0B96C-3F83-44BB-8330-A34CC68EDFE5" Permanent="no" SharedDllRefCount="no" Transitive="no">
+        <RegistryKey Root="HKCU" Key="Software\[Manufacturer]\[ProductName]">
+          <RegistryValue Type="string" Name="Installed" Value="[TARGETDIR]" KeyPath="yes" />
+        </RegistryKey>
+        <File Id="_63208A7A_4CE5_4035_9608_0D61DF54EB36" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="adxloader64.dll" Source="$(var.EPAccessPDF.ProjectDir)Loader\adxloader64.dll" />
+        <File Id="_D433151D_1BC8_48F4_AD56_CB95DAFBEECB" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="adxloader.dll.manifest" Source="$(var.EPAccessPDF.ProjectDir)Loader\adxloader.dll.manifest" />
+        <File Id="_B6D36480_689C_4F69_8B5B_732D479C1881" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="adxloader.dll" Source="$(var.EPAccessPDF.ProjectDir)Loader\adxloader.dll" />
+        <File Id="_0B0287F0_E795_424F_854B_5A70047012C9" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="AddinExpress.MSO.2005.dll" Source="C:\Program Files (x86)\Add-in Express\Add-in Express for .NET\Bin\AddinExpress.MSO.2005.dll" />
+				<File Id="_03B42C0A_6118_44C5_B3CB_5FF13A312E25" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Microsoft.Office.Interop.Access.dll" Source="$(var.EPAccessPDF.TargetDir)Microsoft.Office.Interop.Access.dll" />
+				<File Id="_9EBA0850_FCB2_4606_B46E_FED9F32BE406" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Spire.Pdf.dll" Source="$(var.EPAccessPDF.TargetDir)Spire.Pdf.dll" />
+				<File Id="_A28BE8D4_322E_4E9E_B9B6_E0EFF3898611" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="adodb.dll" Source="$(var.EPAccessPDF.TargetDir)adodb.dll" />
+				<File Id="_8A50DCCD_3A96_4EC3_AD1E_DE1521B4D66E" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="EPAccessPDF.dll.config" Source="$(var.EPAccessPDF.TargetDir)EPAccessPDF.dll.config" />
+				<File Id="_99A4230E_2817_4809_BA9D_E944858D0272" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Microsoft.Office.interop.access.dao.dll" Source="$(var.EPAccessPDF.TargetDir)Microsoft.Office.interop.access.dao.dll" />
+				<File Id="_6527EC76_8577_4AE2_978F_AEFCC77F2B53" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Microsoft.Vbe.Interop.dll" Source="$(var.EPAccessPDF.TargetDir)Microsoft.Vbe.Interop.dll" />
+				<File Id="_32DFF36C_B9D0_47E1_A7AD_B8AB613D25A6" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Office.dll" Source="$(var.EPAccessPDF.TargetDir)Office.dll" />
+				<File Id="_B1968CE9_9DE1_4B86_8316_5306852524F2" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Spire.License.dll" Source="$(var.EPAccessPDF.TargetDir)Spire.License.dll" />
+				<File Id="_D8A218D5_4BA0_4F6C_8585_54C8822735E6" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Spire.License.xml" Source="$(var.EPAccessPDF.TargetDir)Spire.License.xml" />
+				<File Id="_62EC85F4_5FE8_4A1F_B1E5_BD68CCF084F3" DiskId="1" Hidden="no" ReadOnly="no" System="no" Vital="yes" Compressed="yes" Name="Spire.Pdf.xml" Source="$(var.EPAccessPDF.TargetDir)Spire.Pdf.xml" />   
+      </Component>
+    </Directory>
+    <!-- The FileSystem group of the installation package. -->
+    <ComponentGroup Id="FileSystemGroup">
+      <ComponentGroupRef Id="EPAccessPDF.Binaries" />
+      <ComponentGroupRef Id="EPAccessPDF.Satellites" />
+      <ComponentRef Id="comp_0A280305_0816_42F4_B619_C31DCEC5791C" />
+    </ComponentGroup>
+    <!-- The composite feature of the installation package. -->
+    <Feature Id="CompleteInstall" Title="All Files" Level="1" ConfigurableDirectory="TARGETDIR">
+      <ComponentGroupRef Id="FileSystemGroup" />
+    </Feature>
+    <Upgrade Id="{7A29B7A9-F865-4F4D-AC56-1DCA1481957A}">
+      <UpgradeVersion Minimum="1.0.10" Property="NEWPRODUCTFOUND" OnlyDetect="yes" IncludeMinimum="no" Language="1033" />
+      <UpgradeVersion Maximum="1.0.10" Property="OLDPRODUCTFOUND" OnlyDetect="no" IncludeMinimum="yes" IncludeMaximum="no" Language="1033" />
+    </Upgrade>
+    <InstallExecuteSequence>
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR=""]]></Custom>
+      <Custom Action="DIRCA_TARGETDIR_UNINSTALL" After="AppSearch"><![CDATA[PREVIOUSINSTALLFOLDER]]></Custom>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts"><![CDATA[NEWPRODUCTFOUND]]></Custom>
+      <Custom Action="_01BDD1DB_2895_4115_924E_594A8912AEAE" After="StartServices"><![CDATA[$comp_0A280305_0816_42F4_B619_C31DCEC5791C>2]]></Custom>
+      <Custom Action="_4C77F147_2ED4_4889_9F4A_47A92E3F4464" After="_01BDD1DB_2895_4115_924E_594A8912AEAE"><![CDATA[$comp_0A280305_0816_42F4_B619_C31DCEC5791C>2]]></Custom>
+      <Custom Action="_397A231C_0641_486A_B8EC_8E812A5D8F20" After="MsiUnpublishAssemblies"><![CDATA[$comp_0A280305_0816_42F4_B619_C31DCEC5791C=2]]></Custom>
+      <RemoveExistingProducts Before="InstallInitialize" />
+    </InstallExecuteSequence>
+    <InstallUISequence>
+      <FindRelatedProducts Sequence="200" />
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR=""]]></Custom>
+      <Custom Action="DIRCA_TARGETDIR_UNINSTALL" After="AppSearch"><![CDATA[PREVIOUSINSTALLFOLDER]]></Custom>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts"><![CDATA[NEWPRODUCTFOUND]]></Custom>
+    </InstallUISequence>
+    <AdminUISequence>
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR=""]]></Custom>
+    </AdminUISequence>
+  </Product>
+</Wix>

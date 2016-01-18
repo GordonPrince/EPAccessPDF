@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <assemblyIdentity name="EPAccessPDF, PublicKeyToken=d745a421b7b329b0" />
+  <loaderSettings generateLogFile="true" shadowCopyEnabled="false" privileges="user" configFileName="EPAccessPDF.dll.config" minOfficeVersionSupported="14" />
+</configuration>
