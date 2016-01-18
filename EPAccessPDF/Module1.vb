@@ -13,6 +13,7 @@ Public Class AddInUtilities
     Implements IAddInUtilities
 
     Public Sub ImportData() Implements IAddInUtilities.ImportData
+        'this is just a comment to change something for GIT
         MsgBox("ImportData() called.")
     End Sub
 
